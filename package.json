@@ -1,0 +1,19 @@
+{
+  "name": "edgejs",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@edgio/cli": "^7.0.15",
+    "@edgio/core": "^7.0.15",
+    "@edgio/devtools": "^7.0.15",
+    "@edgio/prefetch": "^7.0.15",
+    "@edgio/starter": "^7.0.15"
+  }
+}
