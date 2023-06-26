@@ -6,7 +6,7 @@ module.exports = {
   name: "careers360",
 
   // The name of the team in Edgio to which this app should be deployed.
-   team: 'se-apps',
+   team: 'careers360',
 
   // Overrides the default path to the routes file. The path should be relative to the root of your app.
   routes: './src/routes.js',
@@ -55,12 +55,13 @@ module.exports = {
 
       tls_verify: {
         use_sni: true,
-        sni_hint_and_strict_san_check: "learn.careers360.com",
+        sni_hint_and_strict_san_check: "cdn.entrance360.com",
       },
 
       // Uncomment the following to configure a shield
       // shields: { us_east: 'DCD' },
     },
+
   ],
 
   // Uncomment the following to specify environment specific configs

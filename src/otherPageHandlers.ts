@@ -15,13 +15,6 @@ proxy("origin", {
 			
           	const $ = cheerio.load(res.body);
           	
-          	$("head").append(
-            	`<script src="/main.js" defer="defer"></script>`
-          	);
-          	
-			$("head").append(
-            	`<link rel="preload" as="image" href="/cdn-entrance360/static/images/home/home_page_desk.2a58fddb34b9.png">`
-          	);
           	
           	res.body = $.html()
           				.replace(/https?:\/\/www\.careers360\.com\//g, '/')

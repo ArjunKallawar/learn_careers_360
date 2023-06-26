@@ -3,40 +3,18 @@
 import { Router, edgioRoutes } from '@edgio/core'
 import { starterRoutes } from '@edgio/starter'
 import routeHomePageHandler  from './routeHomePageHandler'
+import otherPageHandlers from './otherPageHandlers'
 import { CACHE_ASSETS } from './cache'
 import { CACHE_PAGES } from './cache'
 
 export default new Router()
-  // Here is an example where we cache api/* at the edge but prevent caching in the browser
-  // .match('/api/:path*', {
-  //   caching: {
-  //     max_age: '1d',
-  //     stale_while_revalidate: '1h',
-  //     bypass_client_cache: true,
-  //     service_worker_max_age: '1d',
-  //   },
-  // })
 
- 
+  .match('/', routeHomePageHandler) // only for home page
   
-  
-    .match('/no-cache-proxy/(.*)', {
-    caching: { bypass_client_cache: true, bypass_cache: true },
-    origin: { set_origin: "origin" },
-    url: {
-      url_rewrite: [
-        {
-          source: "(?i)/no-cache-proxy/(.*)",
-          destination: "/$1",
-          syntax: "regexp",
-        },
-      ],
-    },
-  })
-  
-  .match('/:path*',routeHomePageHandler)
-  
-  
+  .match({ path: '/(.*)',
+  		   headers: { cookie: {not : /sessionid/} },
+  		   method: { not: "POST" } }, otherPageHandlers)
+
   .match('/cdn-entrance360/:path*', ({ cache, 
   									   removeUpstreamResponseHeader, 
   									   proxy, 
@@ -51,8 +29,36 @@ export default new Router()
     return proxy('cdnentrance360', { path: '/:path*' })
   })
   
-   // plugin enabling basic Edgio functionality
+  .match('/login', {
+    caching: { bypass_cache: true , bypass_client_cache: true},
+    comment: "no cache for /login page",
+  })
   
+  .match('/logout', {
+    caching: { bypass_cache: true , bypass_client_cache: true},
+    origin: { set_origin: "origin" },
+    comment: "no cache for /logout page",
+  })
+  
+  .match('/(.*)/order-summary/', {
+    caching: { bypass_cache: true },
+    headers: {
+      set_response_headers: { "X-Message": "order-summary-detected" },
+    },
+  })
+  
+  .match({ path: '/(.*)',
+  		   method: "POST" }, {
+    caching: { bypass_cache: true , bypass_client_cache: true},
+    comment: "no cache for POST requests",
+  })
+  
+  .match(
+    { headers: { cookie: /sessionid/ } },
+    { caching: { bypass_cache: true , bypass_client_cache: true},
+    	headers: {
+        set_response_headers: { "X-Message": "no-cache-cookie-detected" },
+      } }
+  )
   
   .use(starterRoutes)
-

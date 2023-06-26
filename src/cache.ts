@@ -21,7 +21,7 @@ export const CACHE_PAGES = {
     },
     browser: {
         maxAgeSeconds: 0,
-        serviceWorkerSeconds: ONE_HOUR,
+        serviceWorkerSeconds: 0,
     },
 }
 
